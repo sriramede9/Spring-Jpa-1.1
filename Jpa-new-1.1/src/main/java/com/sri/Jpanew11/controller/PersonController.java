@@ -1,18 +1,14 @@
 package com.sri.Jpanew11.controller;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.sri.Jpanew11.dao.PagingAndSortingPerson;
+import com.sri.Jpanew11.dao.PersonJpaRepository;
 import com.sri.Jpanew11.dao.PersonRepository;
 import com.sri.Jpanew11.exception.NoSuchPersonException;
 import com.sri.Jpanew11.model.Person;
@@ -28,6 +25,9 @@ import com.sri.Jpanew11.model.Person;
 @RestController
 @Transactional
 public class PersonController {
+	
+	@Autowired
+	PersonJpaRepository personJpaRepository;
 
 	@Autowired
 	PagingAndSortingPerson pagingAndSortingPerson;
@@ -83,4 +83,21 @@ public class PersonController {
 		return findAll2; 
 		
 	}
+	@GetMapping("/Persons/lastname/{lastname}")
+	public Person getbyLasttName(@PathVariable String lastname) {
+		
+		Person findByLastname = personJpaRepository.findByLastname(lastname);
+		
+		return findByLastname; 
+	}
+	
+	@GetMapping("/Persons/firstname/{firstname}")
+	public Person getbyFirstName(@PathVariable String firstname) {
+		
+		Person findByFirstname = personJpaRepository.findByFirstname(firstname);
+		
+		return findByFirstname; 
+	}
+	
+	
 }
