@@ -1,10 +1,12 @@
 package com.sri.Jpanew11.controller;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -75,8 +77,10 @@ public class PersonController {
 		
 		// Sort sort;
 		Iterable<Person> findAll = pagingAndSortingPerson.findAll(Sort.by(Direction.DESC, "firstname"));
+		 String orders="firstname";
+		Iterable<Person> findAll2 = pagingAndSortingPerson.findAll(Sort.by(orders));
 		
-		return findAll;
+		return findAll2; 
 		
 	}
 }
