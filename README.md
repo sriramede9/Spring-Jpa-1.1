@@ -28,3 +28,29 @@
 		
 	}
 ```
+### Using Customized methods in <em>JPARepository<em> findbyFirstName and findbyLastname
+	
+	```
+	public interface PersonJpaRepository extends JpaRepository<Person, String> {
+
+	Person findByLastname(String lastname);
+	Person findByFirstname(String firstname);
+}
+	
+	
+		@GetMapping("/Persons/lastname/{lastname}")
+	public Person getbyLasttName(@PathVariable String lastname) {
+		
+		Person findByLastname = personJpaRepository.findByLastname(lastname);
+		
+		return findByLastname; 
+	}
+	
+	@GetMapping("/Persons/firstname/{firstname}")
+	public Person getbyFirstName(@PathVariable String firstname) {
+		
+		Person findByFirstname = personJpaRepository.findByFirstname(firstname);
+		
+		return findByFirstname; 
+	}
+	```
