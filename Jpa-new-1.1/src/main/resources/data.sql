@@ -1,2 +1,6 @@
-insert into person values('1','Alpa','Zeon');
-insert into person values('2','Beta','Brown');
+insert into person (id,firstname,lastname)
+values('1','ajay','mishra');
+insert into person (id,firstname,lastname)
+values('2','mike','shen');
+insert into person (id,firstname,lastname)
+values('3','paul','walker');
