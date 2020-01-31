@@ -22,12 +22,16 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.sri.Jpanew11.dao.PagingAndSortingPerson;
 import com.sri.Jpanew11.dao.PersonJpaRepository;
 import com.sri.Jpanew11.dao.PersonRepository;
+import com.sri.Jpanew11.dao.filterCRUDMethods.TestFilterRepository;
 import com.sri.Jpanew11.exception.NoSuchPersonException;
 import com.sri.Jpanew11.model.Person;
 
 @RestController
 @Transactional
 public class PersonController {
+	
+	@Autowired
+	TestFilterRepository testFilterRepository;
 	
 	@Autowired
 	EntityManager entityManager;
@@ -156,7 +160,8 @@ public class PersonController {
 		if (personJpaRepository.existsById(p.getId())) {
 			Person p1 = personJpaRepository.findById(p.getId()).get();
 			p1.setFirstname(p.getFirstname());
-			p1.setLastname(p.getLastname());	
+			p1.setLastname(p.getLastname());
+			
 			return ResponseEntity.ok(p);
 		} else
 			throw new NoSuchPersonException("No such person exists to update");
