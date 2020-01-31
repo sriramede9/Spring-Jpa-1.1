@@ -25,7 +25,7 @@ import com.sri.Jpanew11.model.Person;
 @RestController
 @Transactional
 public class PersonController {
-	
+
 	@Autowired
 	PersonJpaRepository personJpaRepository;
 
@@ -72,32 +72,44 @@ public class PersonController {
 		return findAll;
 
 	}
+
 	@GetMapping("/Persons/Sortbyfirstname")
 	public Iterable<Person> getSortedbyFirstName() {
-		
+
 		// Sort sort;
-		Iterable<Person> findAll = pagingAndSortingPerson.findAll(Sort.by(Direction.DESC, "firstname"));
-		 String orders="firstname";
+		// Iterable<Person> findAll =
+		// pagingAndSortingPerson.findAll(Sort.by(Direction.DESC, "firstname"));
+		String orders = "firstname";
 		Iterable<Person> findAll2 = pagingAndSortingPerson.findAll(Sort.by(orders));
-		
-		return findAll2; 
-		
+
+		return findAll2;
+
 	}
+
 	@GetMapping("/Persons/lastname/{lastname}")
 	public Person getbyLasttName(@PathVariable String lastname) {
-		
+
 		Person findByLastname = personJpaRepository.findByLastname(lastname);
-		
-		return findByLastname; 
+
+		return findByLastname;
 	}
-	
+
 	@GetMapping("/Persons/firstname/{firstname}")
 	public Person getbyFirstName(@PathVariable String firstname) {
-		
+
 		Person findByFirstname = personJpaRepository.findByFirstname(firstname);
-		
-		return findByFirstname; 
+
+		return findByFirstname;
 	}
-	
-	
+
+	@GetMapping("/Persons/firstname/{firstname}/lastname/{lastname}") //filtering based on two params
+	public Person getbyFirstNameandlastname(@PathVariable String firstname, @PathVariable String lastname) {
+
+		Person findByFirstnameandlastname = personJpaRepository.findByFirstnameAndLastname(firstname, lastname);
+
+		System.out.println(findByFirstnameandlastname);
+
+		return findByFirstnameandlastname;
+	}
+
 }
