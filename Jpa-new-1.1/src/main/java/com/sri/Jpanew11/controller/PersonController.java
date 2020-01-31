@@ -3,15 +3,18 @@ package com.sri.Jpanew11.controller;
 import java.net.URI;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -25,6 +28,9 @@ import com.sri.Jpanew11.model.Person;
 @RestController
 @Transactional
 public class PersonController {
+	
+	@Autowired
+	EntityManager entityManager;
 
 	@Autowired
 	PersonJpaRepository personJpaRepository;
@@ -34,6 +40,8 @@ public class PersonController {
 
 	@Autowired
 	PersonRepository personRepository;
+	
+	
 
 	@GetMapping("/Persons")
 	public Iterable<Person> getPerson() {
@@ -102,7 +110,7 @@ public class PersonController {
 		return findByFirstname;
 	}
 
-	@GetMapping("/Persons/firstname/{firstname}/lastname/{lastname}") //filtering based on two params
+	@GetMapping("/Persons/firstname/{firstname}/lastname/{lastname}") // filtering based on two params
 	public Person getbyFirstNameandlastname(@PathVariable String firstname, @PathVariable String lastname) {
 
 		Person findByFirstnameandlastname = personJpaRepository.findByFirstnameAndLastname(firstname, lastname);
@@ -110,6 +118,48 @@ public class PersonController {
 		System.out.println(findByFirstnameandlastname);
 
 		return findByFirstnameandlastname;
+	}
+
+	@DeleteMapping("/Persons/{id}")
+	public ResponseEntity<Person> deleteById(@PathVariable String id) {
+
+		if (personJpaRepository.existsById(id)) {
+
+			Person p = personJpaRepository.findById(id).get();
+
+			personJpaRepository.deleteById(id);
+
+			return ResponseEntity.ok(p);
+		}
+		throw new NoSuchPersonException("No person with such id ->" + id);
+
+	}
+
+	@DeleteMapping("/Persons/firstname/{firstname}")
+	public ResponseEntity<Person> deleteByfirstname(@PathVariable String firstname) {
+
+		if (personJpaRepository.existsByFirstname(firstname)) {
+
+			Person p = personJpaRepository.findByFirstname(firstname);
+
+			personJpaRepository.deleteByFirstname(firstname);
+
+			return ResponseEntity.ok(p);
+		}
+		throw new NoSuchPersonException("No person with such firstname ->" + firstname);
+
+	}
+
+	@PutMapping("/Persons/")
+	public ResponseEntity<Person> updatePerson(@RequestBody Person p) {
+
+		if (personJpaRepository.existsById(p.getId())) {
+			Person p1 = personJpaRepository.findById(p.getId()).get();
+			p1.setFirstname(p.getFirstname());
+			p1.setLastname(p.getLastname());	
+			return ResponseEntity.ok(p);
+		} else
+			throw new NoSuchPersonException("No such person exists to update");
 	}
 
 }
