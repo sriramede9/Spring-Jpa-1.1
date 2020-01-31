@@ -1,6 +1,7 @@
 package com.sri.Jpanew11.controller;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
@@ -165,6 +166,16 @@ public class PersonController {
 			return ResponseEntity.ok(p);
 		} else
 			throw new NoSuchPersonException("No such person exists to update");
+	}
+	
+	@GetMapping("/Persons/distinctfirstname/{firstname}") // filtering based on two params
+	public List<Person> getbydistinctFirstName(@PathVariable String firstname) {
+
+		List<Person> FindByDistinctFirstname = personJpaRepository.findPersonDistinctByFirstname(firstname);
+
+		System.out.println(FindByDistinctFirstname);
+
+		return FindByDistinctFirstname;
 	}
 
 }
