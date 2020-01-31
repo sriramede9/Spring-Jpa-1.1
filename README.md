@@ -54,3 +54,15 @@
 		return findByFirstname; 
 	}
 	```
+	
+### How to combine two params and filter data accordingly
+
+#### PS Method Declaration is very important
+
+	```
+	in JPA Repo Interface
+	Person findByFirstnameAndLastname(String firstname, String lastname);
+	
+	```
+
+
